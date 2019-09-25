@@ -1,0 +1,9 @@
+/node_modules/
+/dist/
+/reports/
+/tmp/
+exposed-coverage.txt
+exposed-version.txt
+npm-debug*
+
+/bin/vizard.js
