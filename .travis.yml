@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '10'
+cache:
+  directories:
+  - node_modules
+script: 'true'
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: mail@stevetaylor.io
+  api_key:
+    secure: YcmT6C5vaXZhRmJglcDEBrme6ew+q65jA0ZFZi9Zd//cLCYK5Aq0jZXy38f463iDqloHjZ36U94wFfRWP4rWUHGZM8fswcTNGBjvTNgOT53mWTl46gg+0lcYV7/g1csO3ZKsy3nG1VkJSF1COf96YImQqgkSx5zWEeAnNrV68edAMLpbu2EVqNihYLO9sfpcEmq4yj9mwY0Muwrim0Xo+0dop0EKLRzcPITplNkkF3l4wexb60M1fhP7I3ZRZjCVcaeBj3W/OfJ/SjVI/D30P4Do43KVCK7okHUK4R72vi8ZWTOmZnVXiqQ1MAPLry0jGs8k77++AKhzn9g7Y5OeB4YmTlz7toqLuLFhXxuZBiAHyCyQpv4xZSTWaZNWh/KeFJkRe/bXSQJdG885+mrWouG3I8UQzHWhIs3cGEF/8N3IYEZC4swUw9PQUSwJFcxe0+BSgF1ZpuvsbzFcedAgxorC6kLMTKUdEsCcLTf8I9MTBBn19QYBBAmuSaKJ6A9XeybV6k40kz6wyM8e+j9mMluYdLM0L5xtalr8EQk5hZSFzCdBshNDDMXngUeIRhMOyOXbUly/Tt2QfVmE0RVeaeuC5GljCMihrOB1P4RwJ1plgsVOPc0sJkkzFwTEWNLHxnhN4JNy9kBbgJu+/SIC3ap+4XVL1+amDiSIxqMx9oY=
+  on:
+    tags: true
