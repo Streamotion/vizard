@@ -15,7 +15,7 @@ VizardInstance.prototype.registerAllTests = function () {
         // Attach the current suite name to the class so when we call `it` we can work out which test we're under
         this.currentSuiteName = suiteName;
 
-        // Calls the function which will do a bunch of `it('foo', function () {...});
+        // Calls the function which will do a bunch of `test('foo', function () {...});
         testCreator();
     });
 };

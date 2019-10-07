@@ -12,7 +12,7 @@ A common usage is as follows:
 You have a file called `my-button.viz.js` :
 ```jsx harmony
 describe('MyButton', function () {
-    it('disabled', async function (target) {
+    test('disabled', async function (target) {
         // Asynchronously render the component inside the target dom element
         await new Promise((resolve) => ReactDOM.render(<MyButton disabled={true}/>, target, resolve));
 
@@ -22,7 +22,7 @@ describe('MyButton', function () {
 });
 ```
 
-As a third parameter, both `describe` and `it` can also take a third parameter of options to specify viewport sizes at which the screenshots should be taken:
+As a third parameter, both `describe` and `test` can also take a third parameter of options to specify viewport sizes at which the screenshots should be taken:
 ```jsx harmony
 const options = {
     viewportWidths: [320, 768, 1024],
@@ -34,7 +34,9 @@ describe('MyButton', function () {
 }, options);
 ```
 
-Entries in an `options` object provided to an `it` function will override any the option passed to the `describe` funciton, if any. 
+Entries in an `options` object provided to a `test` function will override any the option passed to the `describe` function, if any.
+
+You can use `it` instead of `test`. They are the same function.
 
 ### Making golden screenshots
 Here we define a "source of truth" against which future tests will be compared.
@@ -64,7 +66,7 @@ vizard test
 ```
 
 ## Configuration
-You can configure vizard by writing a `.vizardrc` or a `vizard.json` file in your project's root.
+You can configure Vizard by writing a `vizard.json`, `.vizardrc`, `.vizard.js` or `vizard.js` file in your project's root.
 Valid configuration options are as follows:
 
 * `chromeExecutablePath`: Optional path to your Chrome executable, defaults to the output of `which google-chrome-beta`.
