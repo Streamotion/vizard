@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const fsExtra = require('fs-extra');
 const browserify = require('browserify');
+const envify = require('envify/custom');
 const recursive = require('recursive-readdir');
 const logger = require('./logger');
 
@@ -28,6 +29,8 @@ module.exports = async function compileTests({
         const writeablePipeline = browserify(testFilePaths, {
             standalone: BUNDLE_NAME,
         })
+            .transform('babelify')
+            .transform(envify({NODE_ENV: process.env.NODE_ENV || 'development'}))
             .bundle()
             .pipe(fs.createWriteStream(bundleOutfilePath));
 

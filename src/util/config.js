@@ -32,11 +32,22 @@ module.exports = async function getConfig() {
 
         const foundConfigFiles = await Promise.all(
             possibleConfigPaths.map(
-                async (possibleConfigPath) => await fsExtra.readJson(possibleConfigPath)
-                    .catch(() => null)
+                async (possibleConfigPath) => {
+                    try {
+                        if (/\.js$/.test(possibleConfigPath)) {
+                            // If the config is JavaScript, import and evaluate it.
+                            return require(possibleConfigPath)(); // eslint-disable-line global-require
+                        } else {
+                            // If the config is JSON, use it as is.
+                            return await fsExtra.readJson(possibleConfigPath);
+                        }
+                    } catch (error) {
+                        return null;
+                    }
+                }
             )
         )
-            // Filter out all the empty/non existent ones
+            // Filter out all the empty/non existent/erroneous ones
             .then((foundConfigFiles) => foundConfigFiles.filter(Boolean));
 
         if (foundConfigFiles.length > 1) {

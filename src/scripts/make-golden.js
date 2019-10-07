@@ -49,6 +49,8 @@ module.exports = async function makeGolden({
     }
 
     // We always want to clean up
-    await Promise.all(browsers.map((browser) => browser.close()));
-    server.stop();
+    await Promise.all([
+        ...browsers.map((browser) => browser.close()),
+        new Promise((resolve) => void server.close(resolve)),
+    ]);
 };

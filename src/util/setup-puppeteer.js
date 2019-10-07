@@ -1,7 +1,8 @@
 const path = require('path');
 const {execSync} = require('child_process');
+const http = require('http');
 const puppeteer = require('puppeteer-core');
-const serve = require('serve');
+const serveHandler = require('serve-handler');
 const portfinder = require('portfinder');
 const times = require('lodash/times');
 const takeScreenshot = require('./take-screenshot');
@@ -41,7 +42,10 @@ module.exports = async function setupPuppeteer(config) {
     logger.info(`Setting up server on port ${port}`);
 
     // If the user supplied a testRunnerHtml via config, run in their cwd
-    const server = await serve(testRunnerHtml ? process.cwd() : path.join(__dirname, '..', '..'), {port, silent: true, clipless: true});
+    const serveHandlerOptions = {public: testRunnerHtml ? process.cwd() : path.join(__dirname, '..', '..')};
+    const server = http.createServer((req, res) => serveHandler(req, res, serveHandlerOptions));
+
+    await new Promise((resolve) => void server.listen(port, resolve));
 
     const puppeteerOptions = {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
