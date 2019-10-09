@@ -36,6 +36,7 @@
   "author": "Streamotion Web Developers",
   "license": "MIT",
   "dependencies": {
+    "babelify": "^10.0.0",
     "browserify": "^16.5.0",
     "envify": "^4.1.0",
     "get-port": "^3.2.0",
@@ -51,7 +52,7 @@
     "puppeteer-core": "^1.20.0",
     "recursive-readdir": "^2.2.2",
     "rimraf": "^2.7.1",
-    "serve": "^6.5.8"
+    "serve-handler": "^6.1.2"
   },
   "devDependencies": {
     "eslint": "^4.9.0",
