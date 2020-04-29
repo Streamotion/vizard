@@ -56,6 +56,7 @@ module.exports = async function setupPuppeteer(config) {
 
     const browsers = await Promise.all(times(Math.max(1, concurrentLimit), () => puppeteer.launch(puppeteerOptions)));
     const pages = await Promise.all(browsers.map((browser) => browser.newPage()));
+    let anyPageHasError = false;
 
     pages.forEach((page) => {
         page.on('console', (msg) => {
@@ -66,6 +67,10 @@ module.exports = async function setupPuppeteer(config) {
             if (!messageContainsAnyIgnoreString) {
                 logger.info(` > ${messageText}`);
             }
+        });
+        page.on('pageerror', (err) => {
+            logger.error(err);
+            anyPageHasError = true;
         });
     });
 
@@ -109,6 +114,13 @@ module.exports = async function setupPuppeteer(config) {
                 MAX_PAGE_WAIT_MS
             ))
             .then(() => page.waitForFunction(() => !!window._registerTests))
+            .then(async () => {
+                if (anyPageHasError) {
+                    throw new Error(
+                        'Errors occured when puppeteer was loading the test file, please see above logs.'
+                    );
+                }
+            })
     )));
 
     logger.info('Puppeteer setup complete');
