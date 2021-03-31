@@ -1,4 +1,5 @@
 const runPromisesSequentially = require('../util/run-promises-sequentially');
+const wait = require('../util/wait');
 
 function VizardInstance() {
     this.registeredSuites = [];
@@ -31,7 +32,7 @@ VizardInstance.prototype.runTests = async function ({
 } = {}) {
     const vizardTargetRoot = document.getElementById('vizardTargetRoot');
 
-    await runPromisesSequentially(tests.map(({screenshotOutputPath, testName, suiteName}) => async () => {
+    await runPromisesSequentially(tests.map(({screenshotOutputPath, testName, suiteName, options}) => async () => {
         const hungConsoleWarningTimeout = setTimeout(() => {
             console.log(`${suiteName}/${testName} being slow.`);
         }, 5 * 1000); // This is to call out tests that may be 'hung', which is helpful for debugging
@@ -50,6 +51,10 @@ VizardInstance.prototype.runTests = async function ({
 
         if (!screenshotTarget) {
             throw new Error(`No screenshot target returned from test ${suiteName}/${testName}. Did you forget to 'return'?`);
+        }
+
+        if (options && options.postRenderDelayMs) {
+            await wait(options.postRenderDelayMs);
         }
 
         await window.takeScreenshot({targetRect: (screenshotTarget || target).getBoundingClientRect(), screenshotOutputPath});

@@ -47,9 +47,10 @@ module.exports = async function takeScreenshots({
                 height: viewportHeight,
             });
 
-            const testsForWindow = tests.map(({testName, suiteName, ...rest}) => ({
+            const testsForWindow = tests.map(({testName, suiteName, options, ...rest}) => ({
                 testName,
                 suiteName,
+                options,
                 ...rest,
                 screenshotOutputPath: getScreenshotPath({
                     config,

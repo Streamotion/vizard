@@ -10,13 +10,10 @@ const toolkit = require('./toolkit');
         vizardInstance.registerSuite({suiteName, testCreator, suiteOptions});
     };
 
-    // test('focused', function (target) {...});
-    window.test = function (testName, testRunner, testOptions) {
+    // it('focused', function (target) {...});
+    window.it = function (testName, testRunner, testOptions) {
         vizardInstance.registerTestCase({testName, testRunner, testOptions});
     };
-
-    // Alias it to test
-    window.it = window.test;
 
     window._registerTests = () => vizardInstance.registerAllTests();
     window._runTests = (props) => vizardInstance.runTests(props);

@@ -61,7 +61,7 @@ vizard test
     vizard make-golden  - Make golden screenshots from each of the test cases
              --missing                  - Only take golden screenshots that don't yet exist
              --suite SUITE-1 SUITE-2    - Run specific suites
-             --skip-compile             - Don't compile the tests 
+             --skip-compile             - Don't compile the tests
     vizard test         - Make golden screenshots and test them against the golden screenshots
 ```
 
@@ -69,7 +69,7 @@ vizard test
 You can configure Vizard by writing a `vizard.json`, `.vizardrc`, `.vizard.js` or `vizard.js` file in your project's root.
 Valid configuration options are as follows:
 
-* `chromeExecutablePath`: Optional path to your Chrome executable, defaults to the output of `which google-chrome-beta`.
+* `chromeExecutablePath`: Optional path to your Chrome executable, defaults to the output of `which google-chrome-stable`.
 * `concurrentLimit`: Optional number of puppeteer browsers to run in parallel. Defaults to 1.
 * `defaultViewportWidth`: Optional default viewport width in pixels, defaults to `1024`.
 * `defaultViewportHeight`: Optional default viewport height in pixels, defaults to `1080`.
@@ -80,9 +80,9 @@ Valid configuration options are as follows:
 * `testRunnerHtml`: Optional custom HTML page in which tests should be executed.
 * `tmpDir`: Optional custom directory to store temporary files made by Vizard.
 * `pixelMatchOptions`: Options for pixelMatch (the tool used to compare the images)
-    * `threshold`: (default: `0`) Matching threshold, ranges from `0` to `1`. Smaller values make the comparison more sensitive. 
-    * `includeAA`: (default: `false`)  If `true`, disables detecting and ignoring anti-aliased pixels. 
- 
+    * `threshold`: (default: `0`) Matching threshold, ranges from `0` to `1`. Smaller values make the comparison more sensitive.
+    * `includeAA`: (default: `false`)  If `true`, disables detecting and ignoring anti-aliased pixels.
+
 
 ## Docker
 The `Dockerfile` contained in this repository is published as [`foxsportsauweb/vizard`](https://cloud.docker.com/u/foxsportsauweb/repository/docker/foxsportsauweb/vizard).
