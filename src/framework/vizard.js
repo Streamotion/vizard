@@ -1,8 +1,12 @@
+const noop = require('lodash/noop');
+
 const runPromisesSequentially = require('../util/run-promises-sequentially');
 const wait = require('../util/wait');
 
 function VizardInstance() {
     this.registeredSuites = [];
+    this.registeredTestInitializers = {};
+    this.registeredTestFinalizers = {};
     this.registeredTests = [];
     this.currentSuiteName = null;
 }
@@ -19,6 +23,22 @@ VizardInstance.prototype.registerAllTests = function () {
         // Calls the function which will do a bunch of `test('foo', function () {...});
         testCreator();
     });
+};
+
+VizardInstance.prototype.registerTestInitializer = function ({testInitializer}) {
+    if (!this.currentSuiteName) {
+        throw new Error('beforeEach must be called inside a describe callback');
+    }
+
+    this.registeredTestInitializers[this.currentSuiteName] = testInitializer;
+};
+
+VizardInstance.prototype.registerTestFinalizer = function ({testFinalizer}) {
+    if (!this.currentSuiteName) {
+        throw new Error('afterEach must be called inside a describe callback');
+    }
+
+    this.registeredTestFinalizers[this.currentSuiteName] = testFinalizer;
 };
 
 VizardInstance.prototype.registerTestCase = function ({testName, testRunner, testOptions = {}}) {
@@ -39,11 +59,14 @@ VizardInstance.prototype.runTests = async function ({
 
         const target = vizardTargetRoot.appendChild(document.createElement('div'));
         const {testRunner} = this.registeredTests.find((test) => test.testName === testName && test.suiteName === suiteName);
+        const testInitializer = this.registeredTestInitializers[suiteName] || noop;
+        const testFinalizer = this.registeredTestFinalizers[suiteName] || noop;
 
         // Run the test to render something to the viewport
         let screenshotTarget;
 
         try {
+            await testInitializer();
             screenshotTarget = await testRunner(target);
         } catch (e) {
             console.error(`Error running test ${suiteName}/${testName}`, e);
@@ -58,6 +81,12 @@ VizardInstance.prototype.runTests = async function ({
         }
 
         await window.takeScreenshot({targetRect: (screenshotTarget || target).getBoundingClientRect(), screenshotOutputPath});
+
+        try {
+            await testFinalizer(target);
+        } catch (e) {
+            console.error(`Error calling afterEach for test ${suiteName}/${testName}`, e);
+        }
 
         vizardTargetRoot.removeChild(target);
 
